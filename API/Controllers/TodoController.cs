@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Todo.Models;
+using API.Models;
 
-namespace Todo.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase
     {
 
-        private static List<Todos> posts = new List<Todos>
+        private static List<Todo> posts = new List<Todo>
             {
-                new Todos {
+                new Todo {
                     Id = 1,
                     Title = "Vakna",
                     IsActive = true
                 },
-                new Todos {
+                new Todo {
                     Id = 2,
                     Title = "Duscha",
                     IsActive = false
@@ -24,20 +24,20 @@ namespace Todo.Controllers
             };
 
         [HttpGet]
-        public async Task<ActionResult<List<Todos>>> GetAllTodoPosts()
+        public async Task<ActionResult<List<Todo>>> GetAllTodoPosts()
         {
             return Ok(posts);
         }
         //TODO: check if id already exist
         [HttpPost]
-        public async Task<ActionResult<List<Todos>>> AddTodoPost(Todos todo)
+        public async Task<ActionResult<List<Todo>>> AddTodoPost(Todo todo)
         { 
             posts.Add(todo);
             return Ok(posts);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<Todos>>> DeleteTodoPost(int id)
+        public async Task<ActionResult<List<Todo>>> DeleteTodoPost(int id)
         {
             var todo = posts.Find(x => x.Id == id);
             if (todo is null)
