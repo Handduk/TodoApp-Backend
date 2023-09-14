@@ -9,14 +9,14 @@ namespace Todo.Controllers
     public class TodoController : ControllerBase
     {
 
-        private static List<Todos> tickets = new List<Todos>
+        private static List<Todos> posts = new List<Todos>
             {
-                new Models.Todos {
+                new Todos {
                     Id = 1,
                     Title = "Vakna",
                     IsActive = true
                 },
-                new Models.Todos {
+                new Todos {
                     Id = 2,
                     Title = "Duscha",
                     IsActive = false
@@ -24,9 +24,16 @@ namespace Todo.Controllers
             };
 
         [HttpGet]
-        public async Task<ActionResult<List<Todos>>> GetAllTodoTickets()
+        public async Task<ActionResult<List<Todos>>> GetAllTodoPosts()
         {
-            return Ok(tickets);
+            return Ok(posts);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<List<Todos>>> AddTodoPost(Todos todo)
+        {
+            posts.Add(todo);
+            return Ok(posts);
         }
     }
 }
