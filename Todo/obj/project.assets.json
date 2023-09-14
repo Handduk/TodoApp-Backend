@@ -474,11 +474,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Marti\\source\\repos\\TodoApplication\\Back-end\\Todo\\Todo\\Todo.csproj",
+      "projectUniqueName": "C:\\Users\\Marti\\source\\repos\\TodoApplication\\Back-end\\Todo\\Todo.csproj",
       "projectName": "Todo",
-      "projectPath": "C:\\Users\\Marti\\source\\repos\\TodoApplication\\Back-end\\Todo\\Todo\\Todo.csproj",
+      "projectPath": "C:\\Users\\Marti\\source\\repos\\TodoApplication\\Back-end\\Todo\\Todo.csproj",
       "packagesPath": "C:\\Users\\Marti\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Marti\\source\\repos\\TodoApplication\\Back-end\\Todo\\Todo\\obj\\",
+      "outputPath": "C:\\Users\\Marti\\source\\repos\\TodoApplication\\Back-end\\Todo\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Marti\\AppData\\Roaming\\NuGet\\NuGet.Config",
