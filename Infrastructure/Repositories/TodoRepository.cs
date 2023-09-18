@@ -31,4 +31,16 @@ public class TodoRepository : ITodoRepository
             .OrderBy(x => x.Title)
             .ToListAsync();
     }
+
+    public async Task<List<Todo>> RemoveTodo(int id)
+    {
+        var selectedTodo = await _context.Todos.FindAsync(id);
+        _context.Todos.Remove(selectedTodo);
+
+        await _context.SaveChangesAsync();
+        return _context.Todos
+            .OrderBy(x => x.Id)
+            .ToList();
+
+    }
 }
