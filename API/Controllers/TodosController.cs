@@ -48,5 +48,13 @@ namespace Api.Controllers
             return CreatedAtAction("GetTodo", new { id = createdTodo.Id }, createdTodo);
         }
 
+        [HttpDelete]
+        [Route("id")]
+        public async Task<ActionResult<List<TodoDto>>> DeleteTodo(int id)
+        {
+            var selectedTodo = await _todoRepository.RemoveTodo(id);
+            return Ok(selectedTodo);
+        }
+
     }
 }
