@@ -32,15 +32,22 @@ public class TodoRepository : ITodoRepository
             .ToListAsync();
     }
 
-    public async Task<List<Todo>> RemoveTodo(int id)
+    public async Task<Todo> RemoveTodo(int id)
     {
         var selectedTodo = await _context.Todos.FindAsync(id);
         _context.Todos.Remove(selectedTodo);
 
         await _context.SaveChangesAsync();
-        return _context.Todos
-            .OrderBy(x => x.Id)
-            .ToList();
+        return selectedTodo;
+    }
 
+    public async Task<Todo> StatusUpdate(int id)
+    {
+        var selectedTodo = await _context.Todos.FindAsync(id);
+
+        selectedTodo.Completed = selectedTodo.Completed ? false : true;
+
+        await _context.SaveChangesAsync();
+        return selectedTodo;
     }
 }

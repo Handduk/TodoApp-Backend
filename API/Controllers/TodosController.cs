@@ -32,7 +32,7 @@ namespace Api.Controllers
         public async Task<ActionResult<TodoDto>> GetTodo(int id)
         {
             var todo = await _todoRepository.GetTodo(id);
-            if (todo == null)
+            if (todo is null)
             {
                 return NotFound();
             }
@@ -50,10 +50,27 @@ namespace Api.Controllers
 
         [HttpDelete]
         [Route("id")]
-        public async Task<ActionResult<List<TodoDto>>> DeleteTodo(int id)
+        public async Task<ActionResult<TodoDto>> DeleteTodo(int id)
         {
             var selectedTodo = await _todoRepository.RemoveTodo(id);
+            if (selectedTodo is null)
+            {
+                return NotFound();
+            }
             return Ok(selectedTodo);
+        }
+
+        [HttpPut]
+        [Route("id")]
+        public async Task<ActionResult<TodoDto>> UpdateTodoStatus(int id)
+        {
+            var selectedTodo = await _todoRepository.StatusUpdate(id);
+            if (selectedTodo is null)
+            {
+                return NotFound();
+            }
+            var todoDto = _mapper.Map<TodoDto>(selectedTodo);
+            return todoDto;
         }
 
     }
