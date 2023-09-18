@@ -45,7 +45,17 @@ public class TodoRepository : ITodoRepository
     {
         var selectedTodo = await _context.Todos.FindAsync(id);
 
-        selectedTodo.Completed = selectedTodo.Completed ? false : true;
+        selectedTodo.Completed = !selectedTodo.Completed;
+
+        await _context.SaveChangesAsync();
+        return selectedTodo;
+    }
+
+    public async Task<Todo> TitleUpdate(int id, Todo todo)
+    {
+        var selectedTodo = await _context.Todos.FindAsync(id);
+
+        selectedTodo.Title = todo.Title;
 
         await _context.SaveChangesAsync();
         return selectedTodo;
