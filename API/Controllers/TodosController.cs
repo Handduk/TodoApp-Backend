@@ -21,11 +21,11 @@ namespace Api.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<TodoDto>>> GetAllTodos()
-            {
-                var todos = await _todoRepository.GetTodo();
-                var todoDtos = _mapper.Map<List<TodoDto>>(todos);
+        {
+            var todos = await _todoRepository.GetTodo();
+            var todoDtos = _mapper.Map<List<TodoDto>>(todos);
             return Ok(todoDtos);
-            }
+        }
 
         [HttpGet]
         [Route("id")]
@@ -61,10 +61,22 @@ namespace Api.Controllers
         }
 
         [HttpPut]
-        [Route("id")]
+        [Route("{id}")]
         public async Task<ActionResult<TodoDto>> UpdateTodoStatus(int id)
         {
             var selectedTodo = await _todoRepository.StatusUpdate(id);
+            if (selectedTodo is null)
+            {
+                return NotFound();
+            }
+            var todoDto = _mapper.Map<TodoDto>(selectedTodo);
+            return todoDto;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<TodoDto>> UpdateTodoTitle(int id, Todo todo)
+        {
+            var selectedTodo = await _todoRepository.TitleUpdate(id, todo);
             if (selectedTodo is null)
             {
                 return NotFound();
