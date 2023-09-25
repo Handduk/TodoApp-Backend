@@ -12,11 +12,15 @@ namespace Api.Controllers
     {
         private readonly ITodoRepository _todoRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<TodosController> _logger;
 
-        public TodosController(ITodoRepository todoRepository, IMapper mapper)
+        public TodosController(ITodoRepository todoRepository, 
+            IMapper mapper, 
+            ILogger<TodosController> logger)
         {
             _todoRepository = todoRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -49,15 +53,26 @@ namespace Api.Controllers
         }
 
         [HttpDelete]
-        [Route("id")]
+        [Route("{id}")]
         public async Task<ActionResult<TodoDto>> DeleteTodo(int id)
         {
-            var selectedTodo = await _todoRepository.RemoveTodo(id);
-            if (selectedTodo is null)
+            try
             {
-                return NotFound();
+                var selectedTodo = await _todoRepository.RemoveTodo(id);
+                if (selectedTodo == null)
+                {
+                    _logger.LogWarning("Todo with id {id} was not found", id);
+                    return NotFound();
+                }
+                _logger.LogInformation("Todo with id {id} was deleted", id);
+                return NoContent();
+
             }
-            return Ok(selectedTodo);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BingBong Error while trying to delete todo with id {id}", id);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpPut]
