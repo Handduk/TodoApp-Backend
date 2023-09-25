@@ -35,6 +35,11 @@ public class TodoRepository : ITodoRepository
     public async Task<Todo> RemoveTodo(int id)
     {
         var selectedTodo = await _context.Todos.FindAsync(id);
+        if (selectedTodo is null)
+        {
+            return null;
+        }
+
         _context.Todos.Remove(selectedTodo);
 
         await _context.SaveChangesAsync();
