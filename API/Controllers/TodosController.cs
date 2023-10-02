@@ -77,24 +77,12 @@ namespace Api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult<TodoDto>> UpdateTodoStatus(int id)
+        public async Task<ActionResult<TodoDto>> PutTodo(int id, Todo todo)
         {
-            var selectedTodo = await _todoRepository.StatusUpdate(id);
+            var selectedTodo = await _todoRepository.UpdateTodo(id, todo);
             if (selectedTodo is null)
             {
-                return NotFound();
-            }
-            var todoDto = _mapper.Map<TodoDto>(selectedTodo);
-            return todoDto;
-        }
-
-        [HttpPut]
-        public async Task<ActionResult<TodoDto>> UpdateTodoTitle(int id, Todo todo)
-        {
-            var selectedTodo = await _todoRepository.TitleUpdate(id, todo);
-            if (selectedTodo is null)
-            {
-                return NotFound();
+                return BadRequest();
             }
             var todoDto = _mapper.Map<TodoDto>(selectedTodo);
             return todoDto;

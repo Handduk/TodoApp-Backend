@@ -8,7 +8,6 @@ namespace Infrastructure.Repositories
         Task <Todo> GetTodo(int id);
         Task <List<Todo>> GetTodo();
         Task<Todo> RemoveTodo(int id);
-        Task <Todo> StatusUpdate(int id);
-        Task <Todo> TitleUpdate(int id, Todo todo);
+        Task <Todo> UpdateTodo(int id, Todo todo);
     }
 }

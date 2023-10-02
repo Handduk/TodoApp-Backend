@@ -46,23 +46,16 @@ public class TodoRepository : ITodoRepository
         return selectedTodo;
     }
 
-    public async Task<Todo> StatusUpdate(int id)
+
+    public async Task<Todo> UpdateTodo(int id, Todo todo)
     {
-        var selectedTodo = await _context.Todos.FindAsync(id);
-
-        selectedTodo.Completed = !selectedTodo.Completed;
-
+        if (id != todo.Id)
+        {
+            return null;
+        }
+        _context.Entry(todo).State = EntityState.Modified;
         await _context.SaveChangesAsync();
-        return selectedTodo;
-    }
 
-    public async Task<Todo> TitleUpdate(int id, Todo todo)
-    {
-        var selectedTodo = await _context.Todos.FindAsync(id);
-
-        selectedTodo.Title = todo.Title;
-
-        await _context.SaveChangesAsync();
-        return selectedTodo;
+        return todo;
     }
 }
