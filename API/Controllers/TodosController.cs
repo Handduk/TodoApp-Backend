@@ -26,30 +26,60 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TodoDto>>> GetAllTodos()
         {
-            var todos = await _todoRepository.GetTodo();
-            var todoDtos = _mapper.Map<List<TodoDto>>(todos);
-            return Ok(todoDtos);
+            try
+            {
+                var todos = await _todoRepository.GetTodos();
+                var todoDtos = _mapper.Map<List<TodoDto>>(todos);
+                _logger.LogInformation("Todos was loaded successfully");
+                return Ok(todoDtos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while trying to load todos");
+                return StatusCode(500, "Internal Server Error");
+            }
+
         }
 
         [HttpGet]
         [Route("id")]
         public async Task<ActionResult<TodoDto>> GetTodo(int id)
         {
-            var todo = await _todoRepository.GetTodo(id);
-            if (todo is null)
+            try
             {
-                return NotFound();
+                var todo = await _todoRepository.GetTodo(id);
+                if (todo is null)
+                {
+                    _logger.LogWarning("Todo with id {id} was not found", id);
+                    return NotFound();
+                }
+                _logger.LogInformation("Todo with id {id} was found", id);  
+                var todoDto = _mapper.Map<TodoDto>(todo);
+                return Ok(todoDto);
             }
-            var todoDto = _mapper.Map<TodoDto>(todo);
-            return todoDto;
 
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while trying to load todo with id {id}", id);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<Todo>> PostTodo(Todo todo)
         {
-            var createdTodo = await _todoRepository.AddTodo(todo);
-            return CreatedAtAction("GetTodo", new { id = createdTodo.Id }, createdTodo);
+            try
+            {
+                var createdTodo = await _todoRepository.AddTodo(todo);
+                _logger.LogInformation("Todo with id {id} was created", todo.Id);
+                return CreatedAtAction("GetTodo", new { id = createdTodo.Id }, createdTodo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while trying to post todo");
+                return StatusCode(500, "Internal Server Error");
+            }
+
         }
 
         [HttpDelete]
@@ -70,7 +100,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "BingBong Error while trying to delete todo with id {id}", id);
+                _logger.LogError(ex, "Error while trying to delete todo with id {id}", id);
                 return StatusCode(500, "Internal Server Error");
             }
         }
@@ -82,10 +112,12 @@ namespace Api.Controllers
             var selectedTodo = await _todoRepository.UpdateTodo(id, todo);
             if (selectedTodo is null)
             {
+                _logger.LogWarning("Todo with id {id} was not updated", id);
                 return BadRequest();
             }
             var todoDto = _mapper.Map<TodoDto>(selectedTodo);
-            return todoDto;
+            _logger.LogInformation("Todo with id {id} was updated", id);
+            return Ok(todoDto);
         }
 
     }

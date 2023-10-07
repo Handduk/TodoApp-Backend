@@ -25,12 +25,12 @@ public class TodoRepository : ITodoRepository
         return await _context.Todos.FindAsync(id);
     }
 
-    public Task<List<Todo>> GetTodo()
-    {
-        return _context.Todos
-            .OrderBy(x => x.Title)
-            .ToListAsync();
-    }
+        public Task<List<Todo>> GetTodos()
+        {
+            return _context.Todos
+                .OrderBy(x => x.Title)
+                .ToListAsync();
+        }
 
     public async Task<Todo> RemoveTodo(int id)
     {
